@@ -1,0 +1,155 @@
+@import 'colors';
+@import 'variables';
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, font, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font-weight: inherit;
+  font-style: inherit;
+  font-size: 100%;
+  font-family: inherit;
+  vertical-align: baseline;
+}
+
+article,
+aside,
+footer,
+header,
+nav,
+section,
+main {
+  display: block;
+}
+
+*, *:before, *:after {
+  box-sizing: border-box;
+}
+
+em {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font-weight: inherit;
+  font-size: 100%;
+  font-family: inherit;
+  vertical-align: baseline;
+}
+
+:focus {
+  outline: 0;
+}
+
+button {
+  width: auto;
+  margin: 0;
+  padding: 0;
+  border: none;
+  overflow: visible;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  line-height: normal;
+  -webkit-font-smoothing: inherit;
+  -moz-osx-font-smoothing: inherit;
+  /* stylelint-disable property-no-vendor-prefix */
+  -webkit-appearance: none;
+  text-align: inherit;
+  cursor: pointer;
+
+  &::-moz-focus-inner {
+    padding: 0;
+    border: 0;
+  }
+
+  button:hover, button:focus, button:active {
+    color: inherit;
+    box-shadow: none;
+    background-color: inherit;
+  }
+}
+
+ol, ul {
+  list-style: none;
+}
+
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+caption, th, td {
+  text-align: left;
+  font-weight: normal;
+}
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: '';
+}
+
+blockquote, q {
+  quotes: '' '';
+}
+
+sub {
+  vertical-align: sub;
+  font-size: 0.9em;
+}
+
+sup {
+  vertical-align: super;
+  font-size: 0.9em;
+}
+
+picture {
+  display: block;
+  line-height: 1;
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+img {
+  vertical-align: middle;
+  border: 0;
+}
+
+select {
+  font-family: inherit;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+::-ms-expand {
+  display: none;
+}
+
+a {
+  text-decoration: none;
+  color: $light-black;
+}
+
+strong {
+  font-weight: $font-bold;
+}
+
+blockquote {
+  &:before, &:after {
+    content: '\201C';
+  }
+
+  &:after {
+    content: '\201D';
+  }
+}

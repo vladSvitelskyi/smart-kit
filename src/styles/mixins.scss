@@ -1,0 +1,51 @@
+@import 'variables';
+/* stylelint-disable scss/at-import-no-partial-leading-underscore */
+@import '~sass-mq/_mq';
+
+$mobile-only: 'mobile-only';
+$tablet-portrait: 'tablet-portrait';
+$tablet-landscape: 'tablet-landscape';
+$desktop: 'desktop';
+$large-desktop: 'large-desktop';
+$before-tablet: 'before-tablet';
+$before-desktop: 'before-desktop';
+
+$mq-breakpoints: (
+  phone-upper-boundary: 960px,
+  tablet-portrait-boundary: 600px,
+  tablet-portrait-upper-boundary: 960px,
+  tablet-landscape-upper-boundary: 1260px,
+  desktop-upper-boundary: 1800px
+);
+
+@mixin for-size($range) {
+  @if $range == $mobile-only {
+    @include mq($until: phone-upper-boundary) {
+      @content;
+    }
+  } @else if $range == $before-tablet { // Styles for mobile, excluding tablets
+    @include mq($until: tablet-portrait-boundary) {
+      @content;
+    }
+  } @else if $range == $tablet-portrait {
+    @include mq($from: tablet-portrait-boundary) {
+      @content;
+    }
+  } @else if $range == $tablet-landscape {
+    @include mq($from: tablet-portrait-upper-boundary) {
+      @content;
+    }
+  } @else if $range == $before-desktop { // Styles for mobile and tablet, excluding desktops
+    @include mq($until: tablet-landscape-upper-boundary) {
+      @content;
+    }
+  } @else if $range == $desktop {
+    @include mq($from: tablet-landscape-upper-boundary) {
+      @content;
+    }
+  } @else if $range == $large-desktop {
+    @include mq($from: desktop-upper-boundary) {
+      @content;
+    }
+  }
+}

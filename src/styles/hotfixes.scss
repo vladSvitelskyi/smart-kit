@@ -1,0 +1,17 @@
+@import 'mixins';
+
+// Disable automatically increasing the font size on IOS
+html {
+  @include for-size($mobile-only) {
+    /* stylelint-disable property-no-vendor-prefix */
+    -webkit-text-size-adjust: 100%;
+    /* stylelint-enable */
+  }
+}
+
+// IOS fix for events on not pointer elements
+.is-ios {
+  * {
+    cursor: pointer;
+  }
+}
