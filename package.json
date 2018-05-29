@@ -1,12 +1,13 @@
 {
   "name": "smartkit",
   "version": "1.0.0",
-  "description": "",
+  "description": "webpack project starter",
   "main": "src/js/index.js",
   "scripts": {
     "dev": "webpack-dev-server --config ./config/webpack.dev.js",
     "build": "webpack --config ./config/webpack.prod.js"
   },
+  "repository": "github:khryshyn/smart-kit",
   "author": "kgroup",
   "license": "MIT",
   "devDependencies": {
