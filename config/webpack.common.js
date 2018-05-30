@@ -1,10 +1,10 @@
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const SimpleProgressWebpackPlugin = require('simple-progress-webpack-plugin');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 const autoprefixer = require('autoprefixer');
 const projectPaths = require('./project-paths');
 
+// Common Css loaders
 const commonCssLoaders = [
   'css-loader',
   {
@@ -13,7 +13,7 @@ const commonCssLoaders = [
       ident: 'postcss',
       plugins: () => [
         require('postcss-combine-duplicated-selectors')({
-          removeDuplicatedProperties: true
+          removeDuplicatedProperties: true,
         }),
         require('postcss-flexbugs-fixes'),
         require('postcss-pseudoelements'),
@@ -26,13 +26,14 @@ const commonCssLoaders = [
             'not ie < 11',
           ],
           flexbox: 'no-2009',
-        })
+        }),
       ],
     },
   },
-  'sass-loader'
+  'sass-loader',
 ];
 
+// Common settings
 const commonSettings = {
   entry: {
     polyfills: [
@@ -57,7 +58,7 @@ const commonSettings = {
         exclude: /node_modules/,
         loader: 'eslint-loader',
         options: {
-          formatter: require("eslint-formatter-pretty"),
+          formatter: require('eslint-formatter-pretty'),
           emitWarning: true,
         },
       },
@@ -73,8 +74,8 @@ const commonSettings = {
               loader: 'file-loader',
               options: {
                 name: 'fonts/[name].[ext]',
-              }
-            }]
+              },
+            }],
           },
           {
             loader: 'file-loader',
@@ -83,7 +84,7 @@ const commonSettings = {
               name: 'media/[name].[hash:8].[ext]',
             },
           },
-        ]
+        ],
       },
     ],
   },
@@ -93,22 +94,17 @@ const commonSettings = {
       root: projectPaths.appRoot,
     }),
     new SimpleProgressWebpackPlugin({
-      format: 'expanded'
+      format: 'minimal',
     }),
     new StyleLintPlugin({
       configFile: '.stylelintrc',
       files: ['**/*.scss'],
-      formatter: require("stylelint-formatter-pretty"),
-    }),
-    // todo: make it work with njk or jsx dynamically
-    new HtmlWebpackPlugin({
-      title: 'Smart Kit HTML',
-      template: './src/pages/index.html',
+      formatter: require('stylelint-formatter-pretty'),
     }),
   ],
 };
 
 module.exports = {
   commonSettings,
-  commonCssLoaders
+  commonCssLoaders,
 }

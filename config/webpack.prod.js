@@ -1,11 +1,30 @@
-const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+// Do this as the first thing so that any code reading it knows the right env.
+process.env.NODE_ENV = 'production';
+
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const NunjucksWebpackPlugin = require('./plugins/webpack/nunjucks');
 const { commonSettings, commonCssLoaders } = require('./webpack.common.js');
 const merge = require('webpack-merge');
+const webpack = require('webpack');
 const projectPaths = require('./project-paths');
+const getClientEnvironment = require('./env');
 
+// Webpack uses `publicPath` to determine where the app is being served from.
+// It requires a trailing slash, or the file assets will get an incorrect path.
 const publicPath = projectPaths.servedPath;
+
+// `publicUrl` is just like `publicPath`, but we will provide it to our app
+// as %PUBLIC_URL% in `index.html` and `process.env.PUBLIC_URL` in JavaScript.
+// Omit trailing slash as %PUBLIC_URL%/xyz looks better than %PUBLIC_URL%xyz.
+const publicUrl = publicPath.slice(0, -1);
+
+// Get environment variables to inject into our app.
+const env = getClientEnvironment(publicUrl);
+
+// Context for njk template
+const templateContext = env.raw;
 
 module.exports = merge.smart(commonSettings, {
   mode: 'production',
@@ -20,10 +39,10 @@ module.exports = merge.smart(commonSettings, {
         test: /\.scss$/,
         use: [
           MiniCssExtractPlugin.loader,
-          ...commonCssLoaders
-        ]
+          ...commonCssLoaders,
+        ],
       },
-    ]
+    ],
   },
   optimization: {
     minimizer: [
@@ -36,7 +55,7 @@ module.exports = merge.smart(commonSettings, {
         assetNameRegExp: /\.css$/g,
         cssProcessor: require('cssnano'),
         cssProcessorOptions: { discardComments: { removeAll: true } },
-        canPrint: true
+        canPrint: true,
       }),
     ],
     splitChunks: {
@@ -45,14 +64,17 @@ module.exports = merge.smart(commonSettings, {
           name: 'main',
           test: /\.css$/,
           chunks: 'all',
-          enforce: true
-        }
-      }
+          enforce: true,
+        },
+      },
     },
   },
   plugins: [
+    // Makes some environment variables available to the JS code
+    new webpack.DefinePlugin(env.stringified),
     new MiniCssExtractPlugin({
-      filename: "css/[name].css",
+      filename: 'css/[name].css',
     }),
+    NunjucksWebpackPlugin(templateContext),
   ],
 });
