@@ -84,13 +84,21 @@ const commonSettings = {
               name: 'media/[name].[hash:8].[ext]',
             },
           },
+          {
+            test: /\.njk$/,
+            use: [
+              {
+                loader: 'nunjucks-loader',
+              },
+            ],
+          },
         ],
       },
     ],
   },
   plugins: [
     new CleanWebpackPlugin(projectPaths.appBuild, {
-      verbose: false,
+      verbose: true,
       root: projectPaths.appRoot,
     }),
     new SimpleProgressWebpackPlugin({

@@ -4,7 +4,8 @@ process.env.NODE_ENV = 'production';
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-const NunjucksWebpackPlugin = require('./plugins/webpack/nunjucks');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const nunjucksWebpackPlugin = require('./plugins/webpack/nunjucks');
 const { commonSettings, commonCssLoaders } = require('./webpack.common.js');
 const merge = require('webpack-merge');
 const webpack = require('webpack');
@@ -75,6 +76,7 @@ module.exports = merge.smart(commonSettings, {
     new MiniCssExtractPlugin({
       filename: 'css/[name].css',
     }),
-    NunjucksWebpackPlugin(templateContext),
+    new CopyWebpackPlugin([{ from: projectPaths.appPublic, to: projectPaths.appBuild }]),
+    nunjucksWebpackPlugin(templateContext),
   ],
 });

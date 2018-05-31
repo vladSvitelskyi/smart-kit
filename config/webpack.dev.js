@@ -5,7 +5,7 @@ const merge = require('webpack-merge');
 const webpack = require('webpack');
 const projectPaths = require('./project-paths');
 const getClientEnvironment = require('./env');
-const NunjucksWebpackPlugin = require('./plugins/webpack/nunjucks');
+const nunjucksWebpackPlugin = require('./plugins/webpack/nunjucks');
 const { commonSettings, commonCssLoaders } = require('./webpack.common.js');
 
 // Webpack uses `publicPath` to determine where the app is being served from.
@@ -46,6 +46,8 @@ module.exports = merge.smart(commonSettings, {
     compress: true,
     clientLogLevel: 'none',
     hot: true,
+    contentBase: projectPaths.appPublic,
+    watchContentBase: true,
     publicPath: publicPath,
     watchOptions: {
       ignored: /node_modules/,
@@ -58,6 +60,6 @@ module.exports = merge.smart(commonSettings, {
     new webpack.HotModuleReplacementPlugin(),
     // Makes some environment variables available to the JS code
     new webpack.DefinePlugin(env.stringified),
-    NunjucksWebpackPlugin(templateContext),
+    nunjucksWebpackPlugin(templateContext),
   ],
 });
