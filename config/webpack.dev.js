@@ -46,8 +46,6 @@ module.exports = merge.smart(commonSettings, {
     compress: true,
     clientLogLevel: 'none',
     hot: true,
-    contentBase: projectPaths.appBuild,
-    watchContentBase: true,
     publicPath: publicPath,
     watchOptions: {
       ignored: /node_modules/,
