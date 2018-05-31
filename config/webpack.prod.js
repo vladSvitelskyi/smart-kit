@@ -24,8 +24,17 @@ const publicUrl = publicPath.slice(0, -1);
 // Get environment variables to inject into our app.
 const env = getClientEnvironment(publicUrl);
 
+// Current project theme
+const currentTheme = process.env.THEME;
+
+// All project themes folders arr
+const themes = process.env.THEMES.length ? process.env.THEMES.split(',') : [];
+
 // Context for njk template
 const templateContext = env.raw;
+
+// Note: defined here because it will be used more than once.
+const cssFilename = `css/[name]${currentTheme ? '.' + currentTheme : '' }.css`;
 
 module.exports = merge.smart(commonSettings, {
   mode: 'production',
@@ -40,7 +49,7 @@ module.exports = merge.smart(commonSettings, {
         test: /\.scss$/,
         use: [
           MiniCssExtractPlugin.loader,
-          ...commonCssLoaders,
+          ...commonCssLoaders({ currentTheme, themes }),
         ],
       },
     ],
@@ -74,7 +83,7 @@ module.exports = merge.smart(commonSettings, {
     // Makes some environment variables available to the JS code
     new webpack.DefinePlugin(env.stringified),
     new MiniCssExtractPlugin({
-      filename: 'css/[name].css',
+      filename: cssFilename,
     }),
     new CopyWebpackPlugin([{ from: projectPaths.appPublic, to: projectPaths.appBuild }]),
     nunjucksWebpackPlugin(templateContext),

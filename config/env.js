@@ -1,3 +1,5 @@
+const settings = require('./project-settings');
+
 // Make sure that including paths.js after env.js will read .env variables.
 delete require.cache[require.resolve('./project-paths')];
 
@@ -7,6 +9,15 @@ if (!NODE_ENV) {
     'The NODE_ENV environment variable is required but was not specified.',
   );
 }
+
+// Get props from node
+const argv = require('minimist')(process.argv.slice(2));
+
+// Define Theme for project
+process.env.THEME = settings.multiTheme.enabled ? argv.theme || settings.multiTheme.defaultTheme : '';
+
+// All project themes
+process.env.THEMES = settings.multiTheme.enabled ? settings.multiTheme.themes : [];
 
 // Grab NODE_ENV & APP_YOUR_NAME environment variables and prepare them to be
 // injected into the application via DefinePlugin in Webpack configuration.
@@ -21,6 +32,7 @@ const getClientEnvironment = (publicUrl = '') => {
         return env;
       },
       {
+        THEME: process.env.THEME,
         PROD: process.env.NODE_ENV === 'production',
         // Useful for determining whether we’re running in production mode.
         // Most importantly, it switches APP into the correct mode.

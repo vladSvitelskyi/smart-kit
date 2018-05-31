@@ -20,6 +20,12 @@ const publicUrl = '';
 // Get environment variables to inject into our app.
 const env = getClientEnvironment(publicUrl);
 
+// Current project theme
+const currentTheme = process.env.THEME;
+
+// All project themes folders arr
+const themes = process.env.THEMES.length ? process.env.THEMES.split(',') : [];
+
 // Context for njk template
 const templateContext = env.raw;
 
@@ -35,7 +41,7 @@ module.exports = merge.smart(commonSettings, {
         test: /\.scss$/,
         use: [
           'style-loader',
-          ...commonCssLoaders,
+          ...commonCssLoaders({ currentTheme, themes }),
         ],
       },
     ],

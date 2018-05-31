@@ -5,33 +5,39 @@ const autoprefixer = require('autoprefixer');
 const projectPaths = require('./project-paths');
 
 // Common Css loaders
-const commonCssLoaders = [
-  'css-loader',
-  {
-    loader: 'postcss-loader',
-    options: {
-      ident: 'postcss',
-      plugins: () => [
-        require('postcss-combine-duplicated-selectors')({
-          removeDuplicatedProperties: true,
-        }),
-        require('postcss-flexbugs-fixes'),
-        require('postcss-pseudoelements'),
-        autoprefixer({
-          remove: false,
-          browsers: [
-            '>1%',
-            'last 7 versions',
-            'Firefox ESR',
-            'not ie < 11',
-          ],
-          flexbox: 'no-2009',
-        }),
-      ],
+const commonCssLoaders = (data) => {
+  return [
+    'css-loader',
+    {
+      loader: 'postcss-loader',
+      options: {
+        ident: 'postcss',
+        plugins: () => [
+          require('./plugins/postcss-at-theme')({
+            current: data.currentTheme,
+            themes: data.themes,
+          }),
+          require('postcss-combine-duplicated-selectors')({
+            removeDuplicatedProperties: true,
+          }),
+          require('postcss-flexbugs-fixes'),
+          require('postcss-pseudoelements'),
+          autoprefixer({
+            remove: false,
+            browsers: [
+              '>1%',
+              'last 7 versions',
+              'Firefox ESR',
+              'not ie < 11',
+            ],
+            flexbox: 'no-2009',
+          }),
+        ],
+      },
     },
-  },
-  'sass-loader',
-];
+    'sass-loader',
+  ];
+};
 
 // Common settings
 const commonSettings = {

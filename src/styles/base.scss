@@ -7,7 +7,7 @@ body {
   font-size: 16px;
   line-height: 1;
   letter-spacing: 0.2px;
-  background: $white;
+  background: $silver-dark;
   color: $strong-dark;
   /* stylelint-disable property-no-vendor-prefix */
   -webkit-font-smoothing: antialiased;
@@ -16,4 +16,8 @@ body {
   -webkit-touch-callout: none;
   -webkit-tap-highlight-color: transparent;
   /* stylelint-enable */
+
+  @light {
+    background: $white;
+  }
 }
