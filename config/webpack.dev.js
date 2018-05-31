@@ -9,13 +9,13 @@ const NunjucksWebpackPlugin = require('./plugins/webpack/nunjucks');
 const { commonSettings, commonCssLoaders } = require('./webpack.common.js');
 
 // Webpack uses `publicPath` to determine where the app is being served from.
-// It requires a trailing slash, or the file assets will get an incorrect path.
-const publicPath = projectPaths.servedPath;
+// In development, we always serve from the root. This makes config easier.
+const publicPath = '/';
 
 // `publicUrl` is just like `publicPath`, but we will provide it to our app
 // as %PUBLIC_URL% in `index.html` and `process.env.PUBLIC_URL` in JavaScript.
-// Omit trailing slash as %PUBLIC_URL%/xyz looks better than %PUBLIC_URL%xyz.
-const publicUrl = publicPath.slice(0, -1);
+// Omit trailing slash as %PUBLIC_PATH%/xyz looks better than %PUBLIC_PATH%xyz.
+const publicUrl = '';
 
 // Get environment variables to inject into our app.
 const env = getClientEnvironment(publicUrl);
@@ -47,9 +47,12 @@ module.exports = merge.smart(commonSettings, {
     clientLogLevel: 'none',
     hot: true,
     contentBase: projectPaths.appBuild,
+    watchContentBase: true,
     publicPath: publicPath,
     watchOptions: {
       ignored: /node_modules/,
+      aggregateTimeout: 300,
+      poll: 1000,
     },
   },
   plugins: [
