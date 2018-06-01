@@ -1,7 +1,15 @@
 {
   "presets": [
-    "env",
-    "stage-3",
-    "airbnb"
+    [
+      "airbnb",
+      {
+        "targets": {
+          "chrome": 59,
+          "explorer": 11,
+          "firefox": 54,
+          "safari": 10
+        }
+      }
+    ]
   ]
 }

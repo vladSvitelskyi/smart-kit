@@ -4,7 +4,7 @@ module.exports = {
     'browser': true,
     'node': true,
     'es6': true,
-    'jest': true
+    'jest': true,
   },
   'extends': [
     'airbnb-base',
@@ -13,9 +13,9 @@ module.exports = {
   ],
   'parserOptions': {
     'ecmaFeatures': {
-      'jsx': true
+      'jsx': true,
     },
-    'sourceType': 'module'
+    'sourceType': 'module',
   },
   'plugins': ['import'],
   'rules': {
@@ -40,6 +40,6 @@ module.exports = {
     'class-methods-use-this': 0,
     'no-param-reassign': 0,
     'no-nested-ternary': 0,
-    'function-paren-newline': 0
+    'function-paren-newline': 0,
   },
 }

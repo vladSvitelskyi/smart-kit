@@ -34,7 +34,7 @@ const themes = process.env.THEMES.length ? process.env.THEMES.split(',') : [];
 const templateContext = env.raw;
 
 // Note: defined here because it will be used more than once.
-const cssFilename = `css/[name]${currentTheme ? '.' + currentTheme : '' }.css`;
+const cssFilename = `static/css/[name]${currentTheme ? '.' + currentTheme : '' }.css`;
 
 module.exports = merge.smart(commonSettings, {
   mode: 'production',
@@ -46,9 +46,16 @@ module.exports = merge.smart(commonSettings, {
   module: {
     rules: [
       {
-        test: /\.scss$/,
+        test: /\.(scss$|css$)$/,
         use: [
           MiniCssExtractPlugin.loader,
+          {
+            loader: 'css-loader',
+            options: {
+              importLoaders: 1,
+              minimize: true,
+            },
+          },
           ...commonCssLoaders({ currentTheme, themes }),
         ],
       },

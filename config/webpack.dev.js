@@ -38,9 +38,15 @@ module.exports = merge.smart(commonSettings, {
   module: {
     rules: [
       {
-        test: /\.scss$/,
+        test: /\.(scss$|css$)$/,
         use: [
           'style-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              importLoaders: 1,
+            },
+          },
           ...commonCssLoaders({ currentTheme, themes }),
         ],
       },

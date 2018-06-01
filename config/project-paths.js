@@ -44,9 +44,11 @@ module.exports = {
   appRoot: getAppDirectory(),
   appBuild: resolveApp('build'),
   appPublic: resolveApp('public'),
-  appIndexJs: resolveApp('src/index.js'),
+  appPolyfills: resolveApp('config/polyfills'),
+  appIndexJs: resolveApp('src/app.js'),
   appPackageJson: resolveApp('package.json'),
   appSrc: resolveApp('src'),
   servedPath: getServedPath(resolveApp('package.json')),
   appNodeModules: resolveApp('node_modules'),
+  modernizrSettings: resolveApp('.modernizrrc'),
 };

@@ -7,8 +7,8 @@ body {
   font-size: 16px;
   line-height: 1;
   letter-spacing: 0.2px;
-  background: $silver-dark;
-  color: $strong-dark;
+  background: $light-black;
+  color: $white;
   /* stylelint-disable property-no-vendor-prefix */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -19,5 +19,6 @@ body {
 
   @light {
     background: $white;
+    color: $strong-dark;
   }
 }
