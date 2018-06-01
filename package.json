@@ -4,11 +4,11 @@
   "description": "webpack project starter",
   "main": "src/js/app.js",
   "scripts": {
-    "build": "webpack --config ./config/webpack.prod.js",
-    "start-dev": "webpack-dev-server --config ./config/webpack.dev.js",
+    "build": "webpack --mode=production --config ./config/webpack.config.js",
+    "start-dev": "webpack-dev-server --config ./config/webpack.config.js",
     "start-prod": "lite-server --baseDir=build",
-    "start-dev::theme-light": "webpack-dev-server --config ./config/webpack.dev.js --theme=light",
-    "build::theme-light": "webpack --config ./config/webpack.prod.js --theme=light",
+    "start-dev::theme-light": "webpack-dev-server --config ./config/webpack.config.js --theme=light ",
+    "build::theme-light": "webpack --config ./config/webpack.config.js --theme=light",
     "test": "jest --config=./jest.config.json"
   },
   "repository": "github:khryshyn/smart-kit",
