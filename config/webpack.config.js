@@ -77,7 +77,7 @@ const webpackPlugins = {
     new ManifestPlugin({
       fileName: 'asset-manifest.json',
     }),
-    ...nunjucksWebpackPlugin(templateContext),
+    nunjucksWebpackPlugin(templateContext),
   ],
   development: [
     new webpack.NamedModulesPlugin(),
