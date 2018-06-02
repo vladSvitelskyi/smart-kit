@@ -12,9 +12,6 @@ module.exports = {
     'plugin:import/warnings',
   ],
   'parserOptions': {
-    'ecmaFeatures': {
-      'jsx': true,
-    },
     'sourceType': 'module',
   },
   'plugins': ['import'],

@@ -193,9 +193,7 @@ const buildSettins = {
             test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
             loader: 'url-loader',
             options: {
-              fallback: 'responsive-loader',
-              quality: 40,
-              limit: 7000,
+              limit: 8192,
               name: 'static/media/[name].[hash:8].[ext]',
             },
           },
