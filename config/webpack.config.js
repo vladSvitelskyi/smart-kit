@@ -12,6 +12,7 @@ const webpack = require('webpack');
 const autoprefixer = require('autoprefixer');
 const getClientEnvironment = require('./env');
 const projectPaths = require('./project-paths');
+const projectSettings = require('./project-settings');
 
 // Common Plugins
 const ManifestPlugin = require('webpack-manifest-plugin');
@@ -91,6 +92,14 @@ const webpackPlugins = {
   ],
 };
 
+// Multi Theme Plugin
+const multiThemePlugin = projectSettings.multiTheme.enabled ? [
+  require('./plugins/postcss-at-theme')({
+    current: currentTheme,
+    themes: themes,
+  }),
+] : [];
+
 const cssLoaders = {
   common: [
     'css-loader',
@@ -99,10 +108,7 @@ const cssLoaders = {
       options: {
         ident: 'postcss',
         plugins: () => [
-          require('./plugins/postcss-at-theme')({
-            current: currentTheme,
-            themes: themes,
-          }),
+          ...multiThemePlugin,
           require('postcss-combine-duplicated-selectors')({
             removeDuplicatedProperties: true,
           }),
