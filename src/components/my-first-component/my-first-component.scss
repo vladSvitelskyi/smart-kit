@@ -1,0 +1,9 @@
+@import '../../styles/mixins';
+@import '../../styles/colors';
+@import '../../styles/variables';
+
+.my-first-component {
+  padding: 20px;
+  color: $light-black;
+  background: $white;
+}

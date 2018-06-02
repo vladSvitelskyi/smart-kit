@@ -4,3 +4,6 @@ import './styles/normalize.scss';
 import './styles/variables.scss';
 import './styles/shims.scss';
 import './styles/base.scss';
+
+// Import components styles / js
+import './components/my-first-component';

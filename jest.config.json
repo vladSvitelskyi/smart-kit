@@ -1,0 +1,22 @@
+{
+  "collectCoverageFrom": [
+    "src/**/*.js"
+  ],
+  "setupFiles": [
+    "<rootDir>/config/jest/testPolyfills.js"
+  ],
+  "testPathIgnorePatterns": [
+    "<rootDir>[/\\\\](build|node_modules|public|scripts|config|src/pages)[/\\\\]"
+  ],
+  "testEnvironment": "jsdom",
+  "testURL": "http://localhost",
+  "transform": {
+    "^.+\\.scss$": "<rootDir>/config/jest/cssTransform.js",
+    "^.+\\.json$": "<rootDir>/config/jest/fileTransform.js",
+    "^.+\\.js$": "babel-jest"
+  },
+  "transformIgnorePatterns": [
+    "[/\\\\]node_modules[/\\\\].+\\.js$"
+  ],
+  "testResultsProcessor": "jest-teamcity-reporter"
+}

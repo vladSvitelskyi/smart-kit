@@ -1,5 +1,5 @@
 {% extends './layouts/_default.njk' %}
 {% set pageTitle = 'Index page' %}
 {% block main %}
-  <span>Index 1</span>
+  {% include '../components/my-first-component/templates/my-first-component.njk' %}
 {% endblock %}
