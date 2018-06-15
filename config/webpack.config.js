@@ -47,7 +47,7 @@ const currentTheme = process.env.THEME;
 // All project themes folders arr
 const themes = process.env.THEMES.length ? process.env.THEMES.split(',') : [];
 
-// Context for njk template
+// Context (node env) for njk template
 const templateContext = env.raw;
 
 // Note: defined here because it will be used more than once.
