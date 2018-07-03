@@ -44,6 +44,7 @@ module.exports = {
   appRoot: getAppDirectory(),
   appBuild: resolveApp('build'),
   appPublic: resolveApp('public'),
+  appMockBe: resolveApp('mock-backend'),
   appPolyfills: resolveApp('config/polyfills'),
   appIndexJs: resolveApp('src/app.js'),
   appPackageJson: resolveApp('package.json'),

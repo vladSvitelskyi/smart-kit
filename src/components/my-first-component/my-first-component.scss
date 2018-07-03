@@ -6,4 +6,9 @@
   padding: 20px;
   color: $light-black;
   background: $white;
+
+  @light {
+    color: $white;
+    background: $light-black;
+  }
 }

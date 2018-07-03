@@ -1,14 +1,14 @@
 import $ from 'jquery';
-import path from 'path';
-import fs from 'fs';
-import callsite from 'callsite';
+import njk from 'nunjucks';
 
 global.$ = $;
-global.getMockHtml = function (htmlPath) {
-  const stack = callsite();
-  const requester = stack[1].getFileName();
-  const calledDir = path.dirname(requester);
-  const formatedPath = path.normalize(calledDir + htmlPath);
 
-  return fs.readFileSync(formatedPath).toString();
+/**
+ * Render njk template with data
+ * @param htmlPath
+ */
+global.templateRender = function (htmlPath) {
+  return function (data = {}) {
+    return njk.compile(htmlPath).render(data);
+  }
 };

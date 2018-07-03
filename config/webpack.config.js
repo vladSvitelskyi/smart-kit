@@ -1,3 +1,7 @@
+/**
+ * -------------- NODE ENV SETTINGS
+ */
+
 // Get props from node
 const argv = require('minimist')(process.argv.slice(2));
 
@@ -7,7 +11,14 @@ process.env.NODE_ENV = argv.mode || 'development';
 // Set to determine is build rin in Production Mode
 const IS_PROD = process.env.NODE_ENV === 'production';
 
-// Common dependancies
+// Set to determine is need to clean dist folder (no need to clean for all multithemes)
+const CLEAN_DIST = !(argv.clean === 'false');
+
+/**
+ * -------------- GLOBAL IMPORTS
+ */
+
+// Common dependencies
 const webpack = require('webpack');
 const autoprefixer = require('autoprefixer');
 const getClientEnvironment = require('./env');
@@ -28,6 +39,10 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
+/**
+ * -------------- GLOBAL SETTINGS
+ */
+
 // Webpack uses `publicPath` to determine where the app is being served from.
 // It requires a trailing slash, or the file assets will get an incorrect path.
 // In development, we always serve from the root. This makes config easier.
@@ -47,24 +62,21 @@ const currentTheme = process.env.THEME;
 // All project themes folders arr
 const themes = process.env.THEMES.length ? process.env.THEMES.split(',') : [];
 
-// Context for njk template
-const templateContext = env.raw;
-
 // Note: defined here because it will be used more than once.
 const cssFilename = `static/css/[name]${currentTheme ? '.' + currentTheme : '' }.css`;
 
-// Webpack plugins splitted by [common/development/production]
+/**
+ * -------------- WEBPACK PLUGINS
+ */
+
 const webpackPlugins = {
   common: [
     new CaseSensitivePathsPlugin(),
-    new CleanWebpackPlugin(projectPaths.appBuild, {
-      verbose: true,
-      root: projectPaths.appRoot,
-    }),
     new webpack.ProvidePlugin({
       $: 'jquery',
       jQuery: 'jquery',
       'window.jQuery': 'jquery',
+      Promise: 'es6-promise', // works as expected
     }),
     new webpack.DefinePlugin(env.stringified),
     new SimpleProgressWebpackPlugin({
@@ -78,7 +90,7 @@ const webpackPlugins = {
     new ManifestPlugin({
       fileName: 'asset-manifest.json',
     }),
-    nunjucksWebpackPlugin(templateContext),
+    nunjucksWebpackPlugin(env.raw), // Pass node env inside template
   ],
   development: [
     new webpack.NamedModulesPlugin(),
@@ -92,13 +104,37 @@ const webpackPlugins = {
   ],
 };
 
-// Multi Theme Plugin
+/**
+ * -------------- CLEAN DIST PLUGIN
+ */
+
+if (CLEAN_DIST) {
+  webpackPlugins.common = [
+    ...[
+      new CleanWebpackPlugin(projectPaths.appBuild, {
+        verbose: true,
+        root: projectPaths.appRoot,
+      }),
+    ],
+    ...webpackPlugins.common,
+  ];
+}
+
+/**
+ * -------------- MULTI THEME PLUGIN
+ */
+
 const multiThemePlugin = projectSettings.multiTheme.enabled ? [
   require('./plugins/postcss-at-theme')({
     current: currentTheme,
     themes: themes,
   }),
 ] : [];
+
+
+/**
+ * -------------- CSS LOADERS
+ */
 
 const cssLoaders = {
   common: [
@@ -139,11 +175,16 @@ const cssLoaders = {
   ],
 };
 
+
+/**
+ * -------------- MAIN BUILD / ENTRY POINT SETTINGS
+ */
+
 const buildSettins = {
   mode: env.raw.NODE_ENV,
-  devtool: IS_PROD ? false : 'eval-source-map',
+  devtool: IS_PROD ? 'source-map' : 'eval-source-map',
   entry: {
-    main: projectPaths.appIndexJs,
+    main: [projectPaths.appIndexJs],
   },
   output: {
     path: projectPaths.appBuild,
@@ -232,41 +273,48 @@ const buildSettins = {
     ],
   },
   plugins: [...webpackPlugins.common, ...webpackPlugins[env.raw.NODE_ENV]],
-};
-
-// Apply optimization for production build to JS & CSS
-if (IS_PROD) {
-  buildSettins.optimization = {
-    minimizer: [
-      new UglifyJsPlugin({
-        cache: true,
-        parallel: true,
-        sourceMap: false,
-      }),
-      new OptimizeCssAssetsPlugin({
-        assetNameRegExp: /\.css$/g,
-        cssProcessor: require('cssnano'),
-        cssProcessorOptions: { discardComments: { removeAll: true } },
-        canPrint: true,
-      }),
-    ],
+  optimization: {
     splitChunks: {
       cacheGroups: {
+        vendors: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendor',
+          chunks: 'all',
+        },
         styles: {
           name: 'main',
           test: /\.css$/,
           chunks: 'all',
           enforce: true,
         },
-        commons: {
-          test: /[\\/]node_modules[\\/]/,
-          name: 'vendors',
-          chunks: 'all',
-        },
       },
     },
-  }
+  },
+};
+
+/**
+ * -------------- PRODUCTION / DEVELOPMENT SETTINGS
+ */
+
+// Apply optimization for production build to JS & CSS
+if (IS_PROD) {
+  buildSettins.optimization.minimizer = [
+    new UglifyJsPlugin({
+      cache: true,
+      parallel: true,
+      sourceMap: true,
+    }),
+    new OptimizeCssAssetsPlugin({
+      assetNameRegExp: /\.css$/g,
+      cssProcessor: require('cssnano'),
+      cssProcessorOptions: { discardComments: { removeAll: true } },
+      canPrint: true,
+    }),
+  ];
 } else {
+  // Use mock-backend for dev
+  buildSettins.entry.main.unshift(projectPaths.appMockBe);
+
   // Configule dev server for dev mode
   buildSettins.devServer = {
     open: true,

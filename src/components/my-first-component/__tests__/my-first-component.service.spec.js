@@ -1,11 +1,12 @@
 import MyFirstComponentService from '../my-first-component.service';
+import template from './mockHtml/my-first-component.njk';
 import SETTINGS from '../settings';
 
 describe('MyFirstComponentService', () => {
   let service;
   beforeEach(() => {
     // set body html
-    document.documentElement.innerHTML = getMockHtml('/mockHtml/my-first-component.html');
+    document.documentElement.innerHTML = templateRender(template)();
     service = new MyFirstComponentService();
   });
 

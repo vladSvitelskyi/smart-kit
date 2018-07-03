@@ -1,5 +1,10 @@
 import Modernizr from 'modernizr';
-import 'airbnb-browser-shims';
+import 'matchmedia-polyfill';
+import 'babel-polyfill';
+import assign from 'object-assign';
+
+window.Modernizr = Modernizr;
+Object.assign = assign;
 
 // Add Modernizr test
 Modernizr.addTest('is-ios', function () {
